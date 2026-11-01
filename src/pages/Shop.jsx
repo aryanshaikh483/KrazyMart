@@ -34,14 +34,12 @@ const Shop = () => {
   useEffect(() => {
     getProductsData();
   }, []);
+  const filteredProducts = (item) => {
+    const filtered = productsData.filter((product) => {
+      return product.category === item.toLowerCase();
+    });
 
-  let filteredProducts = (item) => {
-    setProductCategoryFilter(
-      productsData.filter((product) => {
-        return product.category === item.toLowerCase();
-      }),
-    );
-    console.log(productCategoryFilter);
+    setProductCategoryFilter(filtered);
   };
 
   const displayProducts =
@@ -69,7 +67,8 @@ const Shop = () => {
             </div>
 
             <p className="text-sm text-white/40">
-              <span className="text-white"> {productsData.length} </span>products to explore
+              <span className="text-white"> {productsData.length} </span>
+              products to explore
             </p>
           </div>
         </section>

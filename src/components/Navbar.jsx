@@ -27,7 +27,9 @@ const Navbar = () => {
         <div className="flex items-center justify-between gap-10">
           <p></p>
           <button className="hover:text-white">
+          <NavLink className="hover:text-white cursor-pointer" to="/cart">
             <ShoppingCart size={26} />
+          </NavLink>
           </button>
           <button onClick={() => isLogged((prev) => !prev) } className="hover:text-white">Login</button>
         </div>

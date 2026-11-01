@@ -7,6 +7,7 @@ export const MyContext = ({ children }) => {
   const [productCategoryFilter, setProductCategoryFilter] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("All Products");
   const [isLogged, setIsLogged] = useState(true);
+  const [isInCart, setIsInCart] = useState([]);
 
   return (
     <MyStore.Provider
@@ -17,8 +18,10 @@ export const MyContext = ({ children }) => {
         setProductCategoryFilter,
         selectedCategory,
         setSelectedCategory,
-        isLogged, 
-        setIsLogged
+        isLogged,
+        setIsLogged,
+        isInCart,
+        setIsInCart,
       }}
     >
       {children}
