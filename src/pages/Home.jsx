@@ -1,13 +1,23 @@
 import React, { useContext } from "react";
-import { ArrowRight, Package, TrendingUp, Star, Tag } from "lucide-react";
+import {
+  ArrowRight,
+  Package,
+  TrendingUp,
+  Star,
+  Tag,
+  Laptop,
+  Shirt,
+  Gem,
+  ShoppingBag,
+} from "lucide-react";
 import { useNavigate } from "react-router";
 import { MyStore } from "@/context/MyContext";
 
 const Home = () => {
   const navigate = useNavigate();
 
-  let { isInCart } = useContext(MyStore);
-
+  const { isInCart, setProductCategoryFilter, setSelectedCategory } =
+    useContext(MyStore);
   const totalItems = isInCart.reduce((total, item) => {
     return total + item.quantity;
   }, 0);
@@ -47,6 +57,41 @@ const Home = () => {
       description: "To explore",
       iconColor: "text-purple-400",
       iconBg: "bg-purple-500/10",
+    },
+  ];
+
+  const categories = [
+    {
+      title: "Electronics",
+      description: "Gadgets & devices",
+      icon: Laptop,
+      color: "text-blue-400",
+      bg: "bg-blue-400/10",
+      category: "electronics",
+    },
+    {
+      title: "Men's Clothing",
+      description: "Everyday essentials",
+      icon: Shirt,
+      color: "text-[#C6FF00]",
+      bg: "bg-[#C6FF00]/10",
+      category: "men's clothing",
+    },
+    {
+      title: "Women's Clothing",
+      description: "Style & fashion",
+      icon: ShoppingBag,
+      color: "text-pink-400",
+      bg: "bg-pink-400/10",
+      category: "women's clothing",
+    },
+    {
+      title: "Jewelry",
+      description: "Elegant accessories",
+      icon: Gem,
+      color: "text-purple-400",
+      bg: "bg-purple-400/10",
+      category: "jewelery",
     },
   ];
 
@@ -156,6 +201,75 @@ const Home = () => {
               </div>
             );
           })}
+        </section>
+
+        {/* Featured Categories */}
+        <section className="space-y-6">
+          <div className="flex items-end justify-between">
+            <div>
+              <p className="text-sm font-medium uppercase tracking-[0.16em] text-[#A3D900]">
+                Browse Collections
+              </p>
+
+              <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+                Shop by <span className="text-[#C6FF00]">Category</span>
+              </h2>
+
+              <p className="mt-3 text-white/40">
+                Find exactly what you're looking for.
+              </p>
+            </div>
+
+            <button
+              onClick={() => navigate("/shop")}
+              className="hidden items-center gap-2 text-sm text-[#C6FF00] transition hover:text-white sm:flex"
+            >
+              Explore All <ArrowRight size={16} />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+            {categories.map((category) => {
+              const Icon = category.icon;
+
+              return (
+                <button
+                  key={category.title}
+                  onClick={() => {
+                    setSelectedCategory(category.title);
+                    setProductCategoryFilter(category.category);
+                    navigate("/shop");
+                  }}
+                  className="group flex flex-col items-start rounded-[24px] border border-white/10 bg-[#181818]/75 p-6 text-left transition-all duration-300 hover:-translate-y-1 hover:border-[#C6FF00]/40 hover:bg-[#202020]/90 sm:p-7"
+                >
+                  <div
+                    className={`flex h-14 w-14 items-center justify-center rounded-[18px] ${category.bg}`}
+                  >
+                    <Icon
+                      size={26}
+                      className={`${category.color} transition-transform duration-300 group-hover:scale-110`}
+                    />
+                  </div>
+
+                  <h3 className="mt-6 text-lg font-semibold text-white transition group-hover:text-[#C6FF00]">
+                    {category.title}
+                  </h3>
+
+                  <p className="mt-2 text-sm text-white/40">
+                    {category.description}
+                  </p>
+
+                  <div className="mt-5 flex items-center gap-2 text-sm text-white/30 transition group-hover:text-[#C6FF00]">
+                    Explore
+                    <ArrowRight
+                      size={15}
+                      className="transition-transform duration-300 group-hover:translate-x-1"
+                    />
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </section>
       </div>
     </main>

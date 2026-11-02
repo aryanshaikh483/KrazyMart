@@ -8,6 +8,7 @@ export const MyContext = ({ children }) => {
   const [selectedCategory, setSelectedCategory] = useState("All Products");
   const [isLogged, setIsLogged] = useState(true);
   const [isInCart, setIsInCart] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const increamentQuantity = (id) => {
     setIsInCart((prev) => {
@@ -32,8 +33,6 @@ export const MyContext = ({ children }) => {
     });
   };
 
-
-
   return (
     <MyStore.Provider
       value={{
@@ -49,6 +48,8 @@ export const MyContext = ({ children }) => {
         setIsInCart,
         increamentQuantity,
         decreamentQuantity,
+        isCartOpen,
+        setIsCartOpen,
       }}
     >
       {children}

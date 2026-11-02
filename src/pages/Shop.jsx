@@ -12,7 +12,7 @@ const Shop = () => {
     setProductCategoryFilter,
     selectedCategory,
     setSelectedCategory,
-    isInCart
+    isInCart,
   } = useContext(MyStore);
 
   const categories = [
@@ -42,9 +42,12 @@ const Shop = () => {
     setProductCategoryFilter(filtered);
   };
 
-  const displayProducts =
-    productCategoryFilter !== null ? productCategoryFilter : productsData;
-
+  const displayProducts = productCategoryFilter
+    ? productsData.filter(
+        (product) => product.category === productCategoryFilter,
+      )
+    : productsData;
+    
   return (
     <main className="min-h-screen px-4 py-10 text-white sm:px-8 lg:px-12">
       <div className="mx-auto max-w-[90%]">
@@ -132,10 +135,11 @@ const Shop = () => {
         {/* Product Masonry Grid */}
         <div className="grid grid-cols-4 gap-10">
           {displayProducts.map((val) => {
+            let itemInCart = isInCart.find((elem) => elem.id === val.id);
 
-            let itemInCart = isInCart.find((elem) => elem.id === val.id) 
-
-            return <ProductCard key={val.id} product={val} itemInCart={itemInCart} />;
+            return (
+              <ProductCard key={val.id} product={val} itemInCart={itemInCart} />
+            );
           })}
         </div>
 
