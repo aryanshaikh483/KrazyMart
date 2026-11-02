@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import {
   Zap,
   UserRound,
@@ -13,8 +13,11 @@ import { v4 as uuidv4 } from "uuid";
 import { useForm } from "react-hook-form";
 
 const Register = () => {
-  const { user, setUser } = useContext(UserStore);
+  const { user, setUser, isRegistered, setIsRegistered } =
+    useContext(UserStore);
   console.log(user);
+
+  let navigate = useNavigate();
 
   let {
     register,
@@ -34,7 +37,7 @@ const Register = () => {
       alert("User already exists!");
       return;
     }
-    
+
     let userId = uuidv4();
 
     let obj = {
@@ -49,10 +52,13 @@ const Register = () => {
     const updatedUsers = [...user, obj];
 
     setUser(updatedUsers);
+    setIsRegistered(true);
 
     localStorage.setItem("sm_users", JSON.stringify(updatedUsers));
 
     reset();
+
+    navigate("/login")
   };
 
   return (

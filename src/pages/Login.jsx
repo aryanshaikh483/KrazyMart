@@ -1,14 +1,43 @@
-import React from "react";
-import { Link } from "react-router";
-import {
-  Zap,
-  Mail,
-  Lock,
-  ArrowRight,
-  Eye,
-} from "lucide-react";
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router";
+import { Zap, Mail, Lock, ArrowRight, Eye } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { UserStore } from "@/context/UserContext";
 
 const Login = () => {
+  let navigate = useNavigate();
+
+  const { user, setIsLogged } = useContext(UserStore);
+
+  let {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const formSubmit = (data) => {
+    console.log(data.uEmail, data.uPassword);
+
+    let userMatch = user.find((val) => {
+      return val.email === data.uEmail;
+    });
+
+    if (userMatch) {
+      if (userMatch.password === data.uPassword) {
+        console.log("Login Sucessful!");
+        setIsLogged(true);
+      } else {
+        console.log("Incorrect Password");
+      }
+    } else console.log("User doens't match");
+
+    reset();
+
+    navigate("/")
+
+  };
+
   return (
     <main className="grid min-h-screen bg-[#141414] text-white lg:grid-cols-2">
       {/* LEFT PANEL */}
@@ -33,14 +62,12 @@ const Login = () => {
           <h1 className="text-4xl font-semibold leading-[1.2] tracking-tight sm:text-5xl xl:text-6xl">
             Shop the future.
             <br />
-            <span className="mt-2 inline-block text-[#C6FF00]">
-              Today.
-            </span>
+            <span className="mt-2 inline-block text-[#C6FF00]">Today.</span>
           </h1>
 
           <p className="mt-7 max-w-md text-sm leading-7 text-white/45 sm:text-base">
-            Thousands of products, lightning-fast delivery, and prices
-            that make your wallet happy.
+            Thousands of products, lightning-fast delivery, and prices that make
+            your wallet happy.
           </p>
 
           {/* Stats */}
@@ -82,21 +109,20 @@ const Login = () => {
         {/* Login card */}
         <div className="relative w-full max-w-108 rounded-[26px] border border-white/9 bg-[#171717]/80 p-6 shadow-2xl shadow-black/20 sm:p-8">
           <div className="mb-8">
-            <h2 className="text-2xl font-semibold tracking-tight">
-              Sign in
-            </h2>
+            <h2 className="text-2xl font-semibold tracking-tight">Sign in</h2>
 
             <p className="mt-1.5 text-sm text-white/40">
               Enter your credentials to continue
             </p>
           </div>
 
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit(formSubmit)} className="space-y-4">
             {/* Email */}
             <div className="flex items-center gap-3 rounded-2xl border border-white/8 bg-[#232323] px-3.5 transition focus-within:border-[#C6FF00]/50">
               <Mail size={16} className="shrink-0 text-white/30" />
 
               <input
+                {...register("uEmail", { required: "Email Address required" })}
                 type="email"
                 placeholder="Email address"
                 aria-label="Email address"
@@ -109,19 +135,12 @@ const Login = () => {
               <Lock size={16} className="shrink-0 text-white/30" />
 
               <input
+                {...register("uPassword", { required: "Password Required" })}
                 type="password"
                 placeholder="Password"
                 aria-label="Password"
                 className="min-w-0 flex-1 bg-transparent py-3 text-sm text-white outline-none placeholder:text-white/30"
               />
-
-              <button
-                type="button"
-                aria-label="Password visibility"
-                className="text-white/30 transition hover:text-[#C6FF00]"
-              >
-                <Eye size={17} />
-              </button>
             </div>
 
             {/* Forgot password */}
@@ -136,7 +155,7 @@ const Login = () => {
 
             {/* Submit */}
             <button
-              type="button"
+              type="submit"
               className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#C6FF00] py-3.5 text-sm font-semibold text-black transition duration-200 hover:bg-[#d6ff38] active:scale-[0.99]"
             >
               Sign in

@@ -4,6 +4,7 @@ export const UserStore = createContext();
 
 export const UserContext = ({ children }) => {
   const [isLogged, setIsLogged] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
   const [user, setUser] = useState(() => {
       const storedUsers = localStorage.getItem("sm_users");
 
@@ -11,7 +12,7 @@ export const UserContext = ({ children }) => {
   });
 
   return (
-    <UserStore.Provider value={{ isLogged, setIsLogged, user, setUser }}>
+    <UserStore.Provider value={{ isLogged, setIsLogged, isRegistered, setIsRegistered, user, setUser }}>
       {children}
     </UserStore.Provider>
   );
