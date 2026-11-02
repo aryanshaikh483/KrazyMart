@@ -5,10 +5,13 @@ import ShapeGrid from "./components/ShapeGrid";
 import AuthRoutes from "./routes/AuthRoutes";
 import { MyStore } from "./context/MyContext";
 import CartDrawer from "./components/CartDrawer";
+import { UserStore } from "./context/UserContext";
 
 const App = () => {
-  let { isLogged, setIsLogged, isCartOpen, setIsCartOpen } =
+  let { isCartOpen, setIsCartOpen } =
     useContext(MyStore);
+
+  let {isLogged, setIsLogged} = useContext(UserStore)
 
   return (
     <div className="relative min-h-screen">

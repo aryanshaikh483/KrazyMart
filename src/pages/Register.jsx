@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useRef } from "react";
 import { Link } from "react-router";
 import {
   Zap,
@@ -8,8 +8,53 @@ import {
   ArrowRight,
   ShoppingBag,
 } from "lucide-react";
+import { UserStore } from "@/context/UserContext";
+import { v4 as uuidv4 } from "uuid";
+import { useForm } from "react-hook-form";
 
 const Register = () => {
+  const { user, setUser } = useContext(UserStore);
+  console.log(user);
+
+  let {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    mode: "onChange",
+  });
+
+  const formSubmit = (data) => {
+    const userExists = user.some((val) => {
+      return val.email.toLowerCase() === data.uEmail.toLowerCase();
+    });
+
+    if (userExists) {
+      alert("User already exists!");
+      return;
+    }
+    
+    let userId = uuidv4();
+
+    let obj = {
+      id: userId,
+      name: data.uName,
+      email: data.uEmail,
+      password: data.uPassword,
+      avatar: data.uName.charAt(0).toUpperCase(),
+      joinedAt: Date.now(),
+    };
+
+    const updatedUsers = [...user, obj];
+
+    setUser(updatedUsers);
+
+    localStorage.setItem("sm_users", JSON.stringify(updatedUsers));
+
+    reset();
+  };
+
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-12 text-white">
       {/* Background glow */}
@@ -42,7 +87,7 @@ const Register = () => {
             </p>
           </div>
 
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit(formSubmit)} className="space-y-4">
             <div>
               <label className="mb-2 block text-sm font-medium text-white/75">
                 Full name
@@ -50,11 +95,15 @@ const Register = () => {
               <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#111111] px-4 transition focus-within:border-[#C6FF00]/60">
                 <UserRound size={18} className="shrink-0 text-white/35" />
                 <input
+                  {...register("uName", { required: "Name is Required" })}
                   type="text"
                   placeholder="Your full name"
                   className="w-full bg-transparent py-3.5 text-sm outline-none placeholder:text-white/25"
                 />
               </div>
+              {errors.uName && (
+                <p className="text-xs text-red-500">{errors.uName.message}</p>
+              )}
             </div>
 
             <div>
@@ -64,11 +113,15 @@ const Register = () => {
               <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#111111] px-4 transition focus-within:border-[#C6FF00]/60">
                 <Mail size={18} className="shrink-0 text-white/35" />
                 <input
+                  {...register("uEmail", { required: "Email is Required" })}
                   type="email"
                   placeholder="you@example.com"
                   className="w-full bg-transparent py-3.5 text-sm outline-none placeholder:text-white/25"
                 />
               </div>
+              {errors.uEmail && (
+                <p className="text-xs text-red-500">{errors.uEmail.message}</p>
+              )}
             </div>
 
             <div>
@@ -78,33 +131,22 @@ const Register = () => {
               <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#111111] px-4 transition focus-within:border-[#C6FF00]/60">
                 <Lock size={18} className="shrink-0 text-white/35" />
                 <input
+                  {...register("uPassword", {
+                    required: "Password is Required",
+                  })}
                   type="password"
                   placeholder="Create a password"
                   className="w-full bg-transparent py-3.5 text-sm outline-none placeholder:text-white/25"
                 />
               </div>
+              {errors.uPassword && (
+                <p className="text-xs text-red-500">
+                  {errors.uPassword.message}
+                </p>
+              )}
             </div>
-
-            <label className="flex cursor-pointer items-start gap-2.5 pt-1 text-xs leading-5 text-white/45">
-              <input
-                type="checkbox"
-                className="mt-1 h-4 w-4 shrink-0 accent-[#C6FF00]"
-              />
-              <span>
-                I agree to the{" "}
-                <a href="#" className="text-[#C6FF00] hover:underline">
-                  Terms of Service
-                </a>{" "}
-                and{" "}
-                <a href="#" className="text-[#C6FF00] hover:underline">
-                  Privacy Policy
-                </a>
-                .
-              </span>
-            </label>
-
             <button
-              type="button"
+              type="submit"
               className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#C6FF00] py-3.5 font-semibold text-black transition hover:bg-[#d7ff3b] active:scale-[0.99]"
             >
               Create Account

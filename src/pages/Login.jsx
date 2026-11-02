@@ -69,7 +69,7 @@ const Login = () => {
         </div>
 
         {/* Left footer */}
-        <p className="relative z-10 hidden text-xs text-white/25 lg:block">
+        <p className="relative z-10 hidden text-xs text-white/25 mx-auto lg:block">
           © 2025 SkyMart. Shopping made simple.
         </p>
       </section>

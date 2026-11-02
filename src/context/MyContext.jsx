@@ -6,10 +6,11 @@ export const MyContext = ({ children }) => {
   const [productsData, setProductsData] = useState([]);
   const [productCategoryFilter, setProductCategoryFilter] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("All Products");
-  const [isLogged, setIsLogged] = useState(true);
   const [isInCart, setIsInCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-
+  
+  const [isLogged, setIsLogged] = useState(false);
+  
   const increamentQuantity = (id) => {
     setIsInCart((prev) => {
       return prev.map((val) => {
