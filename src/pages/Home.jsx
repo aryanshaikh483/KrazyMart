@@ -1,21 +1,24 @@
-
-import React from "react";
-import {
-  ArrowRight,
-  Package,
-  TrendingUp,
-  Star,
-  Tag,
-} from "lucide-react";
+import React, { useContext } from "react";
+import { ArrowRight, Package, TrendingUp, Star, Tag } from "lucide-react";
 import { useNavigate } from "react-router";
+import { MyStore } from "@/context/MyContext";
 
 const Home = () => {
   const navigate = useNavigate();
 
+  let { isInCart } = useContext(MyStore);
+
+  const totalItems = isInCart.reduce((total, item) => {
+    return total + item.quantity;
+  }, 0);
+
+  const cartValue = isInCart.reduce((total, item) => {
+    return total + item.price * item.quantity;
+  }, 0);
   const stats = [
     {
       icon: Package,
-      value: "0",
+      value: totalItems,
       title: "Cart Items",
       description: "In your bag",
       iconColor: "text-[#C6FF00]",
@@ -23,7 +26,7 @@ const Home = () => {
     },
     {
       icon: TrendingUp,
-      value: "$0.00",
+      value: cartValue,
       title: "Cart Value",
       description: "Ready to checkout",
       iconColor: "text-blue-400",
@@ -31,7 +34,7 @@ const Home = () => {
     },
     {
       icon: Star,
-      value: "5",
+      value: "7",
       title: "Top Products",
       description: "Highly rated",
       iconColor: "text-amber-400",
@@ -39,7 +42,7 @@ const Home = () => {
     },
     {
       icon: Tag,
-      value: "6",
+      value: "4",
       title: "Categories",
       description: "To explore",
       iconColor: "text-purple-400",
@@ -50,10 +53,8 @@ const Home = () => {
   return (
     <main className="min-h-screen px-4 py-8 text-white sm:px-6 lg:px-10">
       <div className="mx-auto max-w-369 space-y-12">
-
         {/* Hero Section */}
         <section className="relative overflow-hidden rounded-[28px] border border-white/25 bg-[#181818]/70 backdrop-blur-[2px] px-6 py-10 sm:px-10 sm:py-14 lg:px-14 lg:py-16">
-
           {/* Background Grid */}
           <div
             className="pointer-events-none absolute inset-0 opacity-40"
@@ -67,7 +68,6 @@ const Home = () => {
           />
 
           <div className="relative z-10 flex flex-col justify-between gap-12 lg:flex-row lg:items-center">
-
             {/* Welcome Content */}
             <div className="max-w-2xl">
               <p className="mb-5 text-sm font-medium uppercase tracking-[0.16em] text-[#A3D900]">
@@ -110,9 +110,7 @@ const Home = () => {
             {/* Promotional Cards */}
             <div className="flex w-full flex-col gap-4 sm:flex-row lg:w-46 lg:flex-col">
               <div className="flex flex-1 flex-col items-center justify-center rounded-[20px] border border-[#C6FF00]/15 bg-[#C6FF00]/10 px-6 py-6 text-center">
-                <span className="text-3xl font-bold text-[#C6FF00]">
-                  20+
-                </span>
+                <span className="text-3xl font-bold text-[#C6FF00]">20+</span>
                 <span className="mt-1 text-sm text-white/40">
                   Products Available
                 </span>
@@ -149,9 +147,7 @@ const Home = () => {
                     {stat.value}
                   </h2>
 
-                  <p className="mt-1 text-base text-white/50">
-                    {stat.title}
-                  </p>
+                  <p className="mt-1 text-base text-white/50">{stat.title}</p>
 
                   <p className="mt-1 text-sm text-white/25">
                     {stat.description}
@@ -161,7 +157,6 @@ const Home = () => {
             );
           })}
         </section>
-
       </div>
     </main>
   );

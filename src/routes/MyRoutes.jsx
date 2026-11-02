@@ -3,8 +3,6 @@ import { Route, Routes } from "react-router";
 import Home from "../pages/Home";
 import About from "@/pages/About";
 import Shop from "@/pages/Shop";
-import Login from "@/pages/Login";
-import Register from "@/pages/Register";
 import Cart from "@/pages/Cart";
 
 const MyRoutes = () => {

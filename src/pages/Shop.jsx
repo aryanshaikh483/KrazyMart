@@ -12,6 +12,7 @@ const Shop = () => {
     setProductCategoryFilter,
     selectedCategory,
     setSelectedCategory,
+    isInCart
   } = useContext(MyStore);
 
   const categories = [
@@ -24,7 +25,6 @@ const Shop = () => {
   let getProductsData = async () => {
     try {
       let res = await axios.get("https://fakestoreapi.com/products");
-      console.log(res.data);
       setProductsData(res.data);
     } catch (error) {
       console.log("Api error", error);
@@ -130,7 +130,15 @@ const Shop = () => {
         </section>
 
         {/* Product Masonry Grid */}
-        <ProductCard product={displayProducts} />
+        <div className="grid grid-cols-4 gap-10">
+          {displayProducts.map((val) => {
+
+            let itemInCart = isInCart.find((elem) => elem.id === val.id) 
+
+            return <ProductCard key={val.id} product={val} itemInCart={itemInCart} />;
+          })}
+        </div>
+
         {/* Bottom Note */}
         <footer className="mt-12 flex flex-col justify-between gap-3 border-t border-white/10 py-6 text-xs text-white/30 sm:flex-row sm:items-center">
           <p>Thoughtfully selected. Made for everyday life.</p>
