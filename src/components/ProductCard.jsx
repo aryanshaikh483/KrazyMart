@@ -8,11 +8,11 @@ import {
   Plus,
 } from "lucide-react";
 import React, { useContext } from "react";
+import { useNavigate } from "react-router";
 
 const ProductCard = ({ product, itemInCart }) => {
-  let { setIsInCart, increamentQuantity, decreamentQuantity } = useContext(MyStore);
-
-  // let {productsData} = useContext(MyStore)
+  let { productsData, setIsInCart, increamentQuantity, decreamentQuantity } =
+    useContext(MyStore);
 
   const addToCart = (product) => {
     setIsInCart((prev) => {
@@ -25,6 +25,8 @@ const ProductCard = ({ product, itemInCart }) => {
       return [...prev, { ...product, quantity: 1 }];
     });
   };
+
+  let navigate = useNavigate();
 
   return (
     <div>
@@ -49,6 +51,7 @@ const ProductCard = ({ product, itemInCart }) => {
           </button>
 
           <img
+            onClick={() => navigate(`/detail/${product.id}`)}
             src={product.image}
             alt={product.title}
             loading="lazy"
@@ -73,7 +76,7 @@ const ProductCard = ({ product, itemInCart }) => {
             </span>
           </div>
 
-          <h2 className="min-h-12 text-base font-medium leading-6 text-white/90 transition group-hover:text-[#C6FF00]">
+          <h2 onClick={() => navigate(`/detail/${product.id}`)} className="min-h-12 text-base cursor-pointer font-medium leading-6 text-white/90 transition group-hover:text-[#C6FF00]">
             {product.title}
           </h2>
 
@@ -89,15 +92,21 @@ const ProductCard = ({ product, itemInCart }) => {
             </div>
             {itemInCart ? (
               <div className="flex items-center gap-3 rounded-full border border-white/10 bg-[#111111] p-1">
-                <button onClick={() => decreamentQuantity(product.id)} className="flex h-8 w-8 items-center justify-center rounded-full text-white/60 transition hover:bg-[#C6FF00] hover:text-black">
+                <button
+                  onClick={() => decreamentQuantity(product.id)}
+                  className="flex h-8 w-8 items-center justify-center rounded-full text-white/60 transition hover:bg-[#C6FF00] hover:text-black"
+                >
                   <Minus size={14} />
                 </button>
-                
+
                 <span className="min-w-5 text-center text-sm text-white">
                   {itemInCart.quantity}
                 </span>
 
-                <button onClick={() => increamentQuantity(product.id)} className="flex h-8 w-8 items-center justify-center rounded-full text-white/60 transition hover:bg-[#C6FF00] hover:text-black">
+                <button
+                  onClick={() => increamentQuantity(product.id)}
+                  className="flex h-8 w-8 items-center justify-center rounded-full text-white/60 transition hover:bg-[#C6FF00] hover:text-black"
+                >
                   <Plus size={14} />
                 </button>
               </div>

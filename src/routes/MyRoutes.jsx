@@ -4,6 +4,7 @@ import Home from "../pages/Home";
 import About from "@/pages/About";
 import Shop from "@/pages/Shop";
 import Cart from "@/pages/Cart";
+import ProductDetails from "@/pages/ProductDetails";
 
 const MyRoutes = () => {
   return (
@@ -13,6 +14,7 @@ const MyRoutes = () => {
         <Route path="/about" element={<About />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/detail/:id" element={<ProductDetails />} />
       </Routes>
     </div>
   );

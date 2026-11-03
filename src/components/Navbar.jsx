@@ -7,7 +7,7 @@ import { UserStore } from "@/context/UserContext";
 const Navbar = () => {
   let { setIsCartOpen } = useContext(MyStore);
 
-  let { user, isLogged, setIsLogged } = useContext(UserStore);
+  let { session, isLogged, setIsLogged } = useContext(UserStore);
 
   let navigate = useNavigate();
 
@@ -31,13 +31,6 @@ const Navbar = () => {
           </NavLink>
         </div>
         <div className="flex items-center justify-between gap-10">
-          <p></p>
-          {/* <button onClick={() => setIsCartOpen(true)} className="hover:text-white">
-            <NavLink className="hover:text-white cursor-pointer" to="/cart">
-              <ShoppingCart size={26} />
-            </NavLink>
-          </button> */}
-
           <button
             onClick={() => setIsCartOpen(true)}
             className="hover:text-white"
@@ -45,15 +38,17 @@ const Navbar = () => {
             <ShoppingCart size={26} />
           </button>
 
-          {isLogged &&
-            user.map((val) => {
-              return (
-                <div key={val.id} className="flex items-center justify-center gap-5 border text-xl border-white/20 rounded-xl p-2.5">
-                  <span className="font-bold text-[#202020] border border-white/20 px-1.5 rounded bg-[#C6FF00]">{val.avatar}</span>
-                  <span className="text-white">{val.name}</span>
+          {isLogged && session &&( 
+                <div
+                  key={session.id}
+                  className="flex items-center justify-center gap-5 border text-xl border-white/20 rounded-xl p-2.5"
+                >
+                  <span className="font-bold text-[#202020] border border-white/20 px-1.5 rounded bg-[#C6FF00]">
+                    {session.avatar}
+                  </span>
+                  <span className="text-white">{session.name}</span>
                 </div>
-              );
-            })}
+            )}
 
           {!isLogged ? (
             <button
@@ -72,7 +67,6 @@ const Navbar = () => {
               }}
               className="hover:text-white"
             >
-              
               <LogOutIcon />
             </button>
           )}

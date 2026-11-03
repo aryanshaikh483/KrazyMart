@@ -5,7 +5,7 @@ import { useContext } from "react";
 
 const CartCard = ({ val }) => {
 
-    let { increamentQuantity, decreamentQuantity } = useContext(MyStore);
+    let { increamentQuantity, decreamentQuantity ,removeProductFromCart } = useContext(MyStore);
   
 
   return (
@@ -54,7 +54,7 @@ const CartCard = ({ val }) => {
 
           </div>
 
-          <button className="flex items-center gap-2 text-xs text-white/40 transition hover:text-red-400">
+          <button onClick={() => removeProductFromCart(val.id)} className="flex items-center gap-2 text-xs text-white/40 transition hover:text-red-400">
             <Trash2 size={15} />
             Remove
           </button>

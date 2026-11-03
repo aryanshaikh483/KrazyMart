@@ -7,12 +7,12 @@ import React, { useContext, useEffect } from "react";
 const Shop = () => {
   const {
     productsData,
-    setProductsData,
-    productCategoryFilter,
     setProductCategoryFilter,
     selectedCategory,
     setSelectedCategory,
     isInCart,
+    search,
+    setSearch,
   } = useContext(MyStore);
 
   const categories = [
@@ -22,18 +22,6 @@ const Shop = () => {
     "jewelery",
   ];
 
-  let getProductsData = async () => {
-    try {
-      let res = await axios.get("https://fakestoreapi.com/products");
-      setProductsData(res.data);
-    } catch (error) {
-      console.log("Api error", error);
-    }
-  };
-
-  useEffect(() => {
-    getProductsData();
-  }, []);
   const filteredProducts = (item) => {
     const filtered = productsData.filter((product) => {
       return product.category === item.toLowerCase();
@@ -42,12 +30,20 @@ const Shop = () => {
     setProductCategoryFilter(filtered);
   };
 
-  const displayProducts = productCategoryFilter
-    ? productsData.filter(
-        (product) => product.category === productCategoryFilter,
-      )
-    : productsData;
-    
+
+  const displayProducts = productsData.filter((product) => {
+    const categoryMatch =
+      selectedCategory === "All Products" ||
+      product.category === selectedCategory.toLowerCase();
+
+    const searchMatch = product.title
+      .toLowerCase()
+      .includes(search.toLowerCase().trim());
+
+    return categoryMatch && searchMatch;
+  });
+
+
   return (
     <main className="min-h-screen px-4 py-10 text-white sm:px-8 lg:px-12">
       <div className="mx-auto max-w-[90%]">
@@ -86,14 +82,13 @@ const Shop = () => {
               />
 
               <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
                 type="text"
                 placeholder="Search the collection..."
                 className="w-full rounded-2xl border border-white/10 bg-[#181818]/80 py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-white/30 focus:border-[#C6FF00]/50"
               />
             </div>
-            <button className="border-[#C6FF00] bg-[#C6FF00] text-black shrink-0 rounded-full border px-5 py-2.5 text-sm font-medium  hover:border-[#C6FF00]/40 hover:text-white hover:bg-[#181818]">
-              Search
-            </button>
           </div>
 
           {/* Category Pills */}
@@ -132,7 +127,6 @@ const Shop = () => {
           </div>
         </section>
 
-        {/* Product Masonry Grid */}
         <div className="grid grid-cols-4 gap-10">
           {displayProducts.map((val) => {
             let itemInCart = isInCart.find((elem) => elem.id === val.id);

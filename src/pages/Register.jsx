@@ -15,7 +15,6 @@ import { useForm } from "react-hook-form";
 const Register = () => {
   const { user, setUser, isRegistered, setIsRegistered } =
     useContext(UserStore);
-  console.log(user);
 
   let navigate = useNavigate();
 

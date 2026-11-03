@@ -1,4 +1,5 @@
-import { createContext, useState } from "react";
+import axios from "axios";
+import { createContext, useEffect, useState } from "react";
 
 export const MyStore = createContext();
 
@@ -8,9 +9,30 @@ export const MyContext = ({ children }) => {
   const [selectedCategory, setSelectedCategory] = useState("All Products");
   const [isInCart, setIsInCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  
+  const [singleProduct, setSingleProduct] = useState(null);
+  const [search, setSearch] = useState("");
+
   const [isLogged, setIsLogged] = useState(false);
-  
+
+  let getProductsData = async () => {
+    try {
+      let res = await axios.get("https://fakestoreapi.com/products");
+      setProductsData(res.data);
+    } catch (error) {
+      console.log("Api error", error);
+    }
+  };
+
+  let removeProductFromCart = (id) => {
+    setIsInCart((prev) => {
+      return prev.filter((item) => item.id !== id )
+    } )
+  }
+
+  useEffect(() => {
+    getProductsData();
+  }, []);
+
   const increamentQuantity = (id) => {
     setIsInCart((prev) => {
       return prev.map((val) => {
@@ -51,6 +73,11 @@ export const MyContext = ({ children }) => {
         decreamentQuantity,
         isCartOpen,
         setIsCartOpen,
+        singleProduct,
+        setSingleProduct,
+        search,
+        setSearch,
+        removeProductFromCart
       }}
     >
       {children}

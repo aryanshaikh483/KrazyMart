@@ -7,7 +7,7 @@ import { UserStore } from "@/context/UserContext";
 const Login = () => {
   let navigate = useNavigate();
 
-  const { user, setIsLogged } = useContext(UserStore);
+  const { user, setIsLogged, setSession } = useContext(UserStore);
 
   let {
     register,
@@ -17,8 +17,6 @@ const Login = () => {
   } = useForm();
 
   const formSubmit = (data) => {
-    console.log(data.uEmail, data.uPassword);
-
     let userMatch = user.find((val) => {
       return val.email === data.uEmail;
     });
@@ -27,19 +25,18 @@ const Login = () => {
       if (userMatch.password === data.uPassword) {
         console.log("Login Sucessful!");
         setIsLogged(true);
+        setSession(userMatch);
+        navigate("/");
       } else {
-        console.log("Incorrect Password");
+        alert("Incorrect Password");
       }
-    } else console.log("User doens't match");
+    } else alert("User doens't match");
 
     reset();
-
-    navigate("/")
-
   };
 
   return (
-    <main className="grid min-h-screen bg-[#141414] text-white lg:grid-cols-2">
+    <main className="grid min-h-screen text-white lg:grid-cols-2">
       {/* LEFT PANEL */}
       <section className="relative flex min-h-95 bg-[#181818]/70 backdrop-blur-[2px] flex-col justify-between overflow-hidden border-b border-white/10 px-6 py-8 sm:px-12 sm:py-10 lg:min-h-screen lg:border-b-0 lg:border-r lg:border-white/60 lg:px-12 xl:px-16">
         {/* Background glow */}
